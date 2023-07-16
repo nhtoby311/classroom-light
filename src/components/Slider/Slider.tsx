@@ -3,6 +3,8 @@ import useTime from '../../store/store';
 import { useEffect, useRef, useCallback } from 'react';
 import { useTimer } from 'react-use-precision-timer';
 
+const DelayTime = 1000;
+
 export default function Slider() {
 	const { setCurrentTime, currentTime, incrementTime } = useTime();
 	const firstRender = useRef(true);
@@ -11,7 +13,7 @@ export default function Slider() {
 		incrementTime();
 	}, []);
 	// The callback will be called every 1000 milliseconds.
-	const timer = useTimer({ delay: 1000 }, callback);
+	const timer = useTimer({ delay: DelayTime }, callback);
 
 	useEffect(() => {
 		if (firstRender.current) {
@@ -76,7 +78,7 @@ const BackgroundProgress = styled.div<any>`
 	top: 0;
 	left: ${(props) => (props.progress % 100) - 100}%;
 
-	transition: left 0.5s;
+	transition: left ${DelayTime / 1000}s ease-in;
 `;
 
 const ClipPath = styled.div`

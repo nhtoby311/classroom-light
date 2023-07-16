@@ -1,6 +1,7 @@
 import {
 	Environment,
 	OrbitControls,
+	OrthographicCamera,
 	PerspectiveCamera,
 	SoftShadows,
 	useHelper,
@@ -12,53 +13,24 @@ import { useControls } from 'leva';
 import { useFrame } from '@react-three/fiber';
 import LerpRig from '../LerpRig/LerpRig';
 import useTime from '../../store/store';
+import { Perf } from 'r3f-perf';
+import { easing } from 'maath';
 
 export default function Scene() {
-	const controlsCamera = useControls('camera', {
-		fov: 25,
-		near: 0.1,
-		far: 1000,
-		position: {
-			value: {
-				x: 2.5,
-				y: 1.6,
-				z: -6,
-			},
-			step: 0.1,
-		},
-		rotation: {
-			value: {
-				x: 0,
-				y: 2.2,
-				z: 0,
-			},
-			step: 0.1,
-		},
-	});
-
-	const controlsLight = useControls('light', {
-		position: {
-			value: {
-				x: 14.1,
-				y: 6.6,
-				z: -3.4,
-			},
-			step: 0.1,
-		},
-	});
-
 	const currentTime = useTime((state) => state.currentTime);
 
 	const lightRef = useRef<any>();
+	const lightRef2 = useRef<any>();
+
 	useHelper(lightRef, THREE.DirectionalLightHelper, 0.5, 'cyan');
 
 	const lookAtRef = useRef<any>();
 
 	//const ZLightPosition = 3.4 - currentTime / 2;
 
-	const ZLightPosition = Math.sin(currentTime * 0.1) * Math.PI * 4.2;
+	const ZLightPosition = Math.sin(currentTime * 0.1) * Math.PI * 7;
 
-	const XLightPosition = Math.cos(currentTime * 0.1) * Math.PI * 4.2;
+	const XLightPosition = Math.cos(currentTime * 0.1) * Math.PI * 7;
 
 	// useFrame(() => {
 	// 	lightRef.current.lookAt(lookAtRef.current);
@@ -76,18 +48,27 @@ export default function Scene() {
 	// });
 
 	const vec2 = new THREE.Vector3();
-	useFrame(() => {
+	useFrame((_, delta) => {
 		vec2.set(XLightPosition, lightRef.current.position.y, ZLightPosition);
-		lightRef.current.position.lerp(vec2, 0.005);
+		//lightRef.current.position.lerp(vec2, 0.005);
+
+		easing.damp3(lightRef.current.position, vec2, 1.5, delta);
+		easing.damp3(lightRef2.current.position, vec2, 1.5, delta);
 	});
 
 	const rectLightRef = useRef<any>();
+
+	const controlsPerformace = useControls('performance', {
+		perfVisible: true,
+	});
 
 	// useHelper(rectLightRef, RectAreaLightHelper, 'cyan');
 
 	return (
 		<>
 			{/* <Environment preset='night' background /> */}
+
+			{controlsPerformace.perfVisible && <Perf position={'top-left'} />}
 
 			<color attach='background' args={['#ffffff']} />
 
@@ -97,36 +78,30 @@ export default function Scene() {
 				intensity={2.5}
 				color={'#f7b03e'}
 				ref={lightRef}
-				position={[
-					controlsLight.position.x,
-					controlsLight.position.y,
-					controlsLight.position.z,
-				]}
+				position={[14.1, 6.6, -3.4]}
 				castShadow
 				shadow-mapSize={2048}
-				shadow-camera-top={30}
-				shadow-camera-right={30}
-				shadow-camera-bottom={-30}
-				shadow-camera-left={-30}
+				target={lookAtRef.current}
+				shadow-bias={-0.001}>
+				<orthographicCamera
+					attach='shadow-camera'
+					args={[-8.5, 8.5, 8.5, -8.5, 0.1, 100]}
+				/>
+			</directionalLight>
+
+			<directionalLight
+				ref={lightRef2}
+				intensity={0.5}
+				color={'#f7b03e'}
+				position={[14.1, 4.6, -3.4]}
+				castShadow
+				shadow-mapSize={2048}
+				shadow-camera-top={80}
+				shadow-camera-right={80}
+				shadow-camera-bottom={-80}
+				shadow-camera-left={-80}
 				target={lookAtRef.current}
 			/>
-
-			{/* <directionalLight
-				intensity={1.5}
-				color={'#f7b03e'}
-				position={[
-					controlsLight.position.x,
-					controlsLight.position.y,
-					controlsLight.position.z,
-				]}
-				castShadow
-				shadow-mapSize={2048}
-				shadow-camera-top={50}
-				shadow-camera-right={50}
-				shadow-camera-bottom={-50}
-				shadow-camera-left={-50}
-				target={lookAtRef.current}
-			/> */}
 
 			<rectAreaLight
 				ref={rectLightRef}
@@ -155,11 +130,7 @@ export default function Scene() {
 				// ]}
 				fov={80}
 				makeDefault
-				position={[
-					controlsCamera.position.x,
-					controlsCamera.position.y,
-					controlsCamera.position.z,
-				]}
+				position={[2.5, 1.6, -6]}
 				rotation={[0, Math.PI, 0]}
 				near={0.1}
 				far={10000}
