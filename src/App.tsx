@@ -3,20 +3,24 @@ import { Leva } from 'leva';
 import { useState } from 'react';
 import Scene from './components/Scene/Scene';
 import * as THREE from 'three';
+import Contents from './components/Contents/Contents';
 
 function App() {
 	return (
-		<div className='background-canvas'>
+		<>
 			<Leva />
-			<Canvas
-				shadows
-				gl={{
-					antialias: true,
-					toneMapping: THREE.ACESFilmicToneMapping,
-				}}>
-				<Scene />
-			</Canvas>
-		</div>
+			<div className='background-canvas'>
+				<Canvas
+					shadows
+					gl={{
+						antialias: true,
+						toneMapping: THREE.ACESFilmicToneMapping,
+					}}>
+					<Scene />
+				</Canvas>
+			</div>
+			<Contents />
+		</>
 	);
 }
 
