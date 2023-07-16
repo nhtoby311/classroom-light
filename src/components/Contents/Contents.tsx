@@ -15,7 +15,7 @@ export default function Contents() {
 				<Top />
 
 				<Bottom>
-					<h1>Contents</h1>
+					<div></div>
 					<SliderCont>
 						<h3>TIME</h3>
 						<Slider />
@@ -88,5 +88,7 @@ const SliderInfo = styled.div`
 	h2 {
 		font-size: 81px;
 		font-weight: 700;
+		width: 250px;
+		text-align: center;
 	}
 `;

@@ -2,24 +2,25 @@ import { create } from 'zustand';
 
 type TimeState = {
 	currentTime: number;
+	factor: number;
 	setCurrentTime: (time: number) => void;
-	startTime: () => void;
+	incrementTime: () => void;
 	resetTime: () => void;
 };
 
 const useTime = create<TimeState>()((set) => ({
 	currentTime: 0,
-	setCurrentTime: (time: number) => set({ currentTime: time }),
-	startTime: () => {
-		setInterval(() => {
-			set((state) => ({
-				currentTime:
-					state.currentTime >= 100 ? 0 : state.currentTime + 1,
-			}));
-		}, 1000);
+	factor: 1,
+	setCurrentTime: (time: number) => {
+		set({ currentTime: time });
+	},
+	incrementTime: () => {
+		set((state) => ({
+			currentTime:
+				state.currentTime >= 100 ? 0 : state.currentTime + state.factor,
+		}));
 	},
 	resetTime: () => {
-		console.log('reset');
 		set({ currentTime: 0 });
 	},
 }));

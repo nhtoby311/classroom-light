@@ -1,16 +1,23 @@
 import styled from 'styled-components';
 import useTime from '../../store/store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
+import { useTimer } from 'react-use-precision-timer';
 
 export default function Slider() {
-	const { startTime, currentTime } = useTime();
+	const { setCurrentTime, currentTime, incrementTime } = useTime();
 	const firstRender = useRef(true);
+
+	const callback = useCallback(() => {
+		incrementTime();
+	}, []);
+	// The callback will be called every 1000 milliseconds.
+	const timer = useTimer({ delay: 1000 }, callback);
 
 	useEffect(() => {
 		if (firstRender.current) {
 			firstRender.current = false;
 		} else {
-			startTime();
+			timer.start();
 		}
 	}, []);
 
@@ -19,7 +26,6 @@ export default function Slider() {
 			<Background>
 				<BackgroundProgress progress={currentTime} />
 			</Background>
-			{currentTime}
 
 			<SVG
 				width='560'
@@ -68,9 +74,9 @@ const BackgroundProgress = styled.div<any>`
 	height: 100%;
 	background: linear-gradient(86deg, #bbbbbb 0%, #ffffff 100%);
 	top: 0;
-	left: ${(props) => props.progress - 100}%;
+	left: ${(props) => (props.progress % 100) - 100}%;
 
-	transition: left 0.5s ease-in-out;
+	transition: left 0.5s;
 `;
 
 const ClipPath = styled.div`

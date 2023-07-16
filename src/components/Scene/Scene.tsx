@@ -54,7 +54,11 @@ export default function Scene() {
 
 	const lookAtRef = useRef<any>();
 
-	const ZLightPosition = 3.4 - currentTime / 2;
+	//const ZLightPosition = 3.4 - currentTime / 2;
+
+	const ZLightPosition = Math.sin(currentTime * 0.1) * Math.PI * 4.2;
+
+	const XLightPosition = Math.cos(currentTime * 0.1) * Math.PI * 4.2;
 
 	// useFrame(() => {
 	// 	lightRef.current.lookAt(lookAtRef.current);
@@ -73,12 +77,8 @@ export default function Scene() {
 
 	const vec2 = new THREE.Vector3();
 	useFrame(() => {
-		vec2.set(
-			lightRef.current.position.x,
-			lightRef.current.position.y,
-			ZLightPosition
-		);
-		lightRef.current.position.lerp(vec2, 0.025);
+		vec2.set(XLightPosition, lightRef.current.position.y, ZLightPosition);
+		lightRef.current.position.lerp(vec2, 0.005);
 	});
 
 	const rectLightRef = useRef<any>();
