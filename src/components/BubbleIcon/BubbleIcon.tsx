@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export default function BubbleIcon(props: any) {
-	return <Container>{props.children}</Container>;
+	return <Container onClick={props.onClickCB}>{props.children}</Container>;
 }
 
 const Container = styled.div`

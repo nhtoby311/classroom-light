@@ -1,9 +1,25 @@
 import styled from 'styled-components';
+import useTime from '../../store/store';
+import { useEffect, useRef } from 'react';
 
 export default function Slider() {
+	const { startTime, currentTime } = useTime();
+	const firstRender = useRef(true);
+
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false;
+		} else {
+			startTime();
+		}
+	}, []);
+
 	return (
 		<Container>
-			<Background />
+			<Background>
+				<BackgroundProgress progress={currentTime} />
+			</Background>
+			{currentTime}
 
 			<SVG
 				width='560'
@@ -30,16 +46,31 @@ const Container = styled.div`
 	width: 500px;
 `;
 
-const Background = styled.div`
+const Background = styled.div<any>`
 	display: flex;
 	position: absolute;
+	//width: 100%;
 	width: 100%;
+	top: 0;
+	left: 0;
 	height: 100%;
-	background: linear-gradient(86deg, #c6cbd0 0%, #c214e4 100%);
+	background: #ffffff7f;
 	mask-image: url(mask.svg);
 	-webkit-mask-image: url(mask.svg);
 	mask-size: cover;
 	-webkit-mask-size: cover;
+`;
+
+const BackgroundProgress = styled.div<any>`
+	display: flex;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(86deg, #bbbbbb 0%, #ffffff 100%);
+	top: 0;
+	left: ${(props) => props.progress - 100}%;
+
+	transition: left 0.5s ease-in-out;
 `;
 
 const ClipPath = styled.div`

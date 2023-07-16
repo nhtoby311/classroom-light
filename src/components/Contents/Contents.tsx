@@ -3,8 +3,12 @@ import Slider from '../Slider/Slider';
 import BubbleIcon from '../BubbleIcon/BubbleIcon';
 import RefreshArrowSVG from '../SVG/RefreshArrowSVG';
 import FastForwardSVG from '../SVG/FastForwardSVG';
+import useTime from '../../store/store';
 
 export default function Contents() {
+	const resetTime = useTime((state) => state.resetTime);
+	const currentTime = useTime((state) => state.currentTime);
+
 	return (
 		<Container>
 			<Hero>
@@ -16,10 +20,10 @@ export default function Contents() {
 						<h3>TIME</h3>
 						<Slider />
 						<SliderInfo>
-							<BubbleIcon>
+							<BubbleIcon onClickCB={resetTime}>
 								<RefreshArrowSVG />
 							</BubbleIcon>
-							<h2>12:00</h2>
+							<h2>{currentTime}:00</h2>
 							<BubbleIcon>
 								<FastForwardSVG />
 							</BubbleIcon>

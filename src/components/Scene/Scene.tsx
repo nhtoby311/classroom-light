@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import { useControls } from 'leva';
 import { useFrame } from '@react-three/fiber';
 import LerpRig from '../LerpRig/LerpRig';
+import useTime from '../../store/store';
 
 export default function Scene() {
 	const controlsCamera = useControls('camera', {
@@ -46,10 +47,14 @@ export default function Scene() {
 		},
 	});
 
+	const currentTime = useTime((state) => state.currentTime);
+
 	const lightRef = useRef<any>();
 	useHelper(lightRef, THREE.DirectionalLightHelper, 0.5, 'cyan');
 
 	const lookAtRef = useRef<any>();
+
+	const ZLightPosition = 3.4 - currentTime / 2;
 
 	// useFrame(() => {
 	// 	lightRef.current.lookAt(lookAtRef.current);
@@ -65,6 +70,16 @@ export default function Scene() {
 
 	// 	lightRef.current.position.lerp(vec, 0.025);
 	// });
+
+	const vec2 = new THREE.Vector3();
+	useFrame(() => {
+		vec2.set(
+			lightRef.current.position.x,
+			lightRef.current.position.y,
+			ZLightPosition
+		);
+		lightRef.current.position.lerp(vec2, 0.025);
+	});
 
 	const rectLightRef = useRef<any>();
 
