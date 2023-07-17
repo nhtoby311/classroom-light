@@ -6,15 +6,17 @@ import { useTimer } from 'react-use-precision-timer';
 const DelayTime = 1000;
 
 export default function Slider() {
-	const { setCurrentTime, currentTime, incrementTime } = useTime();
+	const { setCurrentTime, currentTime, incrementTime, isPaused } = useTime();
 	const firstRender = useRef(true);
 
 	const [isDragging, setIsDragging] = useState(false);
 	const [rangeVal, setRangeVal] = useState(currentTime);
 
 	const callback = useCallback(() => {
-		incrementTime();
-	}, []);
+		if (!isPaused) {
+			incrementTime();
+		}
+	}, [isPaused]);
 	// The callback will be called every 1000 milliseconds.
 	const timer = useTimer({ delay: DelayTime }, callback);
 
@@ -72,8 +74,8 @@ export default function Slider() {
 				max='100'
 				value={isDragging ? rangeVal : currentTime}
 				onChange={handleRangeChange}
-				onMouseUp={handleRangeRelease}
-				onMouseDown={() => setIsDragging(true)}
+				onPointerUp={handleRangeRelease}
+				onPointerDown={() => setIsDragging(true)}
 			/>
 		</Container>
 	);
