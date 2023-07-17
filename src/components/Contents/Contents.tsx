@@ -8,6 +8,7 @@ import PlaySVG from '../SVG/PlaySVG';
 import PauseSVG from '../SVG/PauseSVG';
 import SlowBackSVG from '../SVG/SlowBackSVG';
 import { formatTime } from '../../utils/time';
+import { useEffect, useMemo } from 'react';
 
 export default function Contents() {
 	const resetTime = useStore((state) => state.resetTime);
@@ -17,9 +18,35 @@ export default function Contents() {
 	const factor = useStore((state) => state.factor);
 	const currentTime = useStore((state) => state.currentTime);
 
+	const setCurrentTheme = useStore((state) => state.setTheme);
+	const isDayNightCycle = useStore((state) => state.isDayNightCycle);
+	const setIsDayNightCycle = useStore((state) => state.setIsDayNightCycle);
+
 	const startTime = 11;
-	const convertTime = currentTime * 14.4 + startTime * 60;
-	const mimicTime = convertTime > 1440 ? convertTime - 1440 : convertTime;
+	const convertTime = useMemo(
+		() => currentTime * 14.4 + startTime * 60,
+		[currentTime]
+	);
+	const mimicTime = useMemo(
+		() => (convertTime > 1440 ? convertTime - 1440 : convertTime),
+		[convertTime]
+	);
+
+	useEffect(() => {
+		if (isDayNightCycle) {
+			if (mimicTime >= 300 && mimicTime < 700) {
+				setCurrentTheme('yellow');
+			} else if (mimicTime >= 700 && mimicTime < 1100) {
+				setCurrentTheme('light');
+			} else if (
+				mimicTime >= 1100 ||
+				(mimicTime > 0 && mimicTime < 300)
+			) {
+				setCurrentTheme('dark');
+			}
+		}
+		//console.log(mimicTime);
+	}, [mimicTime, isDayNightCycle]);
 
 	return (
 		<Wrapper>
@@ -64,7 +91,27 @@ export default function Contents() {
 							</SliderInfo>
 						</SliderCont>
 
-						<div></div>
+						<div style={{ pointerEvents: 'all' }}>
+							<button onClick={() => setCurrentTheme('yellow')}>
+								Yellow
+							</button>
+							<button onClick={() => setCurrentTheme('b&w')}>
+								B&W
+							</button>
+							<button onClick={() => setCurrentTheme('dark')}>
+								Dark
+							</button>
+							<button onClick={() => setCurrentTheme('light')}>
+								Light
+							</button>
+
+							<button
+								onClick={() =>
+									setIsDayNightCycle(!isDayNightCycle)
+								}>
+								{isDayNightCycle + ''}
+							</button>
+						</div>
 					</Bottom>
 				</Hero>
 			</Container>

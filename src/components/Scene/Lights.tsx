@@ -1,13 +1,20 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import useStore from '../../store/store';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { easing } from 'maath';
 import { PerformanceMonitor, SoftShadows } from '@react-three/drei';
 import { motion as motion3d } from 'framer-motion-3d';
+import { THEME } from '../../store/slices/themeSlice';
 
 export default function Lights() {
 	const currentTime = useStore((state) => state.currentTime);
+
+	const currentTheme = useStore((state) => state.currentTheme);
+
+	const isDayNightCycle = useStore((state) => state.isDayNightCycle);
+
+	const factor = useStore((state) => state.factor);
 
 	const lookAtRef = useRef<any>();
 
@@ -28,20 +35,87 @@ export default function Lights() {
 		if (!isLow) easing.damp3(lightRef2.current.position, vec2, 1.5, delta);
 	});
 
+	//ANIMATION VARIANTS
+
+	const DURATION = useMemo(
+		() => (isDayNightCycle ? 20 / factor : 2.5),
+		[factor, isDayNightCycle]
+	);
+
+	type VARIANT = {
+		[K in THEME]: any;
+	};
+
+	const variantsDirecLight: VARIANT = {
+		yellow: {
+			color: '#f7b03e',
+			transition: { duration: DURATION },
+		},
+		'b&w': {
+			color: '#ffffff',
+			transition: { duration: DURATION },
+		},
+		dark: {
+			color: '#383838',
+			transition: { duration: DURATION },
+		},
+		light: {
+			color: '#9bfffa',
+			transition: { duration: DURATION },
+		},
+	};
+
+	const variantsAmbiLight: VARIANT = {
+		yellow: {
+			color: '#72643d',
+			transition: { duration: DURATION },
+		},
+		'b&w': {
+			color: '#676767',
+			transition: { duration: DURATION },
+		},
+		dark: {
+			color: '#191a24',
+			transition: { duration: DURATION },
+		},
+		light: {
+			color: '#6a7c87',
+			transition: { duration: DURATION },
+		},
+	};
+
+	const variantsRectAreaLight: VARIANT = {
+		yellow: {
+			color: '#ffc267',
+			transition: { duration: DURATION },
+		},
+		'b&w': {
+			color: '#bebdc0',
+			transition: { duration: DURATION },
+		},
+		dark: {
+			color: '#7e81ae',
+			transition: { duration: DURATION },
+		},
+		light: {
+			color: '#7cdffe',
+			transition: { duration: DURATION },
+		},
+	};
+
 	// useHelper(rectLightRef, RectAreaLightHelper, 'cyan');
 
 	return (
 		<>
 			<motion3d.ambientLight
-				animate={{ color: ['#72643d', '#676767'] }}
-				transition={{ duration: 10 }}
+				animate={currentTheme}
+				variants={variantsAmbiLight}
 				intensity={0.6}
 			/>
 			<motion3d.directionalLight
 				intensity={2.5}
-				//color={'#f7b03e'}
-				animate={{ color: ['#f7b03e', '#ffffff'] }}
-				transition={{ duration: 10 }}
+				animate={currentTheme}
+				variants={variantsDirecLight}
 				ref={lightRef}
 				position={[14.1, 6.6, -3.4]}
 				castShadow
@@ -61,8 +135,8 @@ export default function Lights() {
 					<motion3d.directionalLight
 						ref={lightRef2}
 						intensity={0.5}
-						animate={{ color: ['#f7b03e', '#ffffff'] }}
-						transition={{ duration: 10 }}
+						animate={currentTheme}
+						variants={variantsDirecLight}
 						position={[14.1, 4.6, -3.4]}
 						castShadow
 						shadow-mapSize={2048}
@@ -75,8 +149,8 @@ export default function Lights() {
 
 					<motion3d.rectAreaLight
 						position={[17, 2, 1]}
-						animate={{ color: ['#ffc267', '#bebdc0'] }}
-						transition={{ duration: 10 }}
+						animate={currentTheme}
+						variants={variantsRectAreaLight}
 						intensity={1}
 						lookAt={lookAtRef.current}
 						width={10}

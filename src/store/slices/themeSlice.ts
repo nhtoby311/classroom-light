@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { StateCreator } from 'zustand';
 import { StoreState } from '../store';
 
-type THEME = 'yellow' | 'dark' | 'b&w';
+export type THEME = 'yellow' | 'dark' | 'b&w' | 'light';
 
 export type ThemeState = {
 	currentTheme: THEME;
