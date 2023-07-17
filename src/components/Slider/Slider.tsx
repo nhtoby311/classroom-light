@@ -81,6 +81,11 @@ const Container = styled.div`
 	position: relative;
 	min-width: 500px;
 	align-items: center;
+
+	@media (max-width: 700px) {
+		min-width: auto;
+		width: 100%;
+	}
 `;
 
 const Background = styled.div<any>`
@@ -121,6 +126,7 @@ const ClipPath = styled.div`
 const SVG = styled.svg`
 	position: relative;
 	visibility: hidden;
+	width: 100%;
 `;
 
 const Input = styled.input`

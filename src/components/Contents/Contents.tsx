@@ -33,13 +33,16 @@ export default function Contents() {
 							<h3>TIME</h3>
 							<Slider />
 							<SliderInfo>
-								<BubbleIcon onClickCB={resetTime}>
-									<RefreshArrowSVG />
-								</BubbleIcon>
-								<BubbleIcon
-									onClickCB={() => pauseTime(!isPaused)}>
-									{isPaused ? <PlaySVG /> : <PauseSVG />}
-								</BubbleIcon>
+								<OtherControlsCont>
+									<BubbleIcon onClickCB={resetTime}>
+										<RefreshArrowSVG />
+									</BubbleIcon>
+									<BubbleIcon
+										onClickCB={() => pauseTime(!isPaused)}>
+										{isPaused ? <PlaySVG /> : <PauseSVG />}
+									</BubbleIcon>
+								</OtherControlsCont>
+
 								<h2>{formatTime(mimicTime)}</h2>
 								<ControlsCont>
 									<BubbleIcon
@@ -49,7 +52,7 @@ export default function Contents() {
 										}}>
 										<SlowBackSVG />
 									</BubbleIcon>
-									{factor}x
+									<p>{factor}x</p>
 									<BubbleIcon
 										onClickCB={() => {
 											if (factor < 10)
@@ -89,6 +92,10 @@ const Container = styled.div`
 	min-height: 100%;
 	pointer-events: none;
 	color: white;
+
+	@media (max-width: 700px) {
+		width: 100%;
+	}
 `;
 
 const Hero = styled.div`
@@ -110,6 +117,9 @@ const Bottom = styled.div`
 	align-items: flex-end;
 	padding: 30px 50px;
 	width: 100%;
+	@media (max-width: 700px) {
+		padding: 20px 10px;
+	}
 `;
 
 const SliderCont = styled.div`
@@ -121,6 +131,10 @@ const SliderCont = styled.div`
 	h3 {
 		font-size: 28px;
 		font-weight: 500;
+
+		@media (max-width: 700px) {
+			font-size: 20px;
+		}
 	}
 `;
 
@@ -134,6 +148,25 @@ const SliderInfo = styled.div`
 		font-weight: 700;
 		width: 250px;
 		text-align: center;
+		user-select: none;
+
+		@media (max-width: 700px) {
+			font-size: 60px;
+		}
+	}
+	@media (max-width: 700px) {
+		flex-direction: column;
+		gap: 10px;
+	}
+`;
+
+const OtherControlsCont = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+	@media (max-width: 700px) {
+		gap: 10px;
 	}
 `;
 
@@ -142,4 +175,7 @@ const ControlsCont = styled.div`
 	justify-content: center;
 	align-items: center;
 	gap: 12px;
+	p {
+		user-select: none;
+	}
 `;

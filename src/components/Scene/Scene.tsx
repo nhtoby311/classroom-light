@@ -59,9 +59,9 @@ export default function Scene() {
 
 	const rectLightRef = useRef<any>();
 
-	const controlsPerformace = useControls('performance', {
-		perfVisible: true,
-	});
+	// const controlsPerformace = useControls('performance', {
+	// 	perfVisible: true,
+	// });
 
 	const [isLow, setIsLow] = useState(false);
 
@@ -71,7 +71,7 @@ export default function Scene() {
 		<>
 			{/* <Environment preset='night' background /> */}
 
-			{controlsPerformace.perfVisible && <Perf position={'top-left'} />}
+			{/* {controlsPerformace.perfVisible && <Perf position={'top-left'} />} */}
 
 			<color attach='background' args={['#ffffff']} />
 
