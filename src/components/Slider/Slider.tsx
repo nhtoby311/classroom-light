@@ -7,7 +7,6 @@ const DelayTime = 1000;
 
 export default function Slider() {
 	const { setCurrentTime, currentTime, incrementTime, isPaused } = useTime();
-	const firstRender = useRef(true);
 
 	const [isDragging, setIsDragging] = useState(false);
 	const [rangeVal, setRangeVal] = useState(currentTime);
@@ -21,11 +20,7 @@ export default function Slider() {
 	const timer = useTimer({ delay: DelayTime }, callback);
 
 	useEffect(() => {
-		if (firstRender.current) {
-			firstRender.current = false;
-		} else {
-			timer.start();
-		}
+		timer.start();
 	}, []);
 
 	useEffect(() => {
@@ -34,7 +29,7 @@ export default function Slider() {
 		}
 	}, [currentTime]);
 
-	const handleRangeChange = (event) => {
+	const handleRangeChange = (event: any) => {
 		if (!isDragging) {
 			setIsDragging(true);
 		}

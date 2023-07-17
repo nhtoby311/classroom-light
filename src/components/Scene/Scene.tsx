@@ -24,7 +24,7 @@ export default function Scene() {
 	const lightRef = useRef<any>();
 	const lightRef2 = useRef<any>();
 
-	useHelper(lightRef, THREE.DirectionalLightHelper, 0.5, 'cyan');
+	// useHelper(lightRef, THREE.DirectionalLightHelper, 0.5, 'cyan');
 
 	const lookAtRef = useRef<any>();
 

@@ -7,6 +7,7 @@ import useTime from '../../store/store';
 import PlaySVG from '../SVG/PlaySVG';
 import PauseSVG from '../SVG/PauseSVG';
 import SlowBackSVG from '../SVG/SlowBackSVG';
+import { formatTime } from '../../utils/time';
 
 export default function Contents() {
 	const resetTime = useTime((state) => state.resetTime);
@@ -15,6 +16,10 @@ export default function Contents() {
 	const setFactor = useTime((state) => state.setFactor);
 	const factor = useTime((state) => state.factor);
 	const currentTime = useTime((state) => state.currentTime);
+
+	const startTime = 11;
+	const convertTime = currentTime * 14.4 + startTime * 60;
+	const mimicTime = convertTime > 1440 ? convertTime - 1440 : convertTime;
 
 	return (
 		<Wrapper>
@@ -35,7 +40,7 @@ export default function Contents() {
 									onClickCB={() => pauseTime(!isPaused)}>
 									{isPaused ? <PlaySVG /> : <PauseSVG />}
 								</BubbleIcon>
-								<h2>{currentTime}:00</h2>
+								<h2>{formatTime(mimicTime)}</h2>
 								<ControlsCont>
 									<BubbleIcon
 										onClickCB={() => {
