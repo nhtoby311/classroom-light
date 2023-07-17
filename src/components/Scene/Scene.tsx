@@ -28,9 +28,8 @@ export default function Scene() {
 
 	//const ZLightPosition = 3.4 - currentTime / 2;
 
-	const ZLightPosition = Math.sin(currentTime * 0.1) * Math.PI * 7;
-
-	const XLightPosition = Math.cos(currentTime * 0.1) * Math.PI * 7;
+	const ZLightPosition = Math.sin(currentTime * 0.02 * Math.PI) * 25;
+	const XLightPosition = Math.cos(currentTime * 0.02 * Math.PI) * 25;
 
 	// useFrame(() => {
 	// 	lightRef.current.lookAt(lookAtRef.current);
