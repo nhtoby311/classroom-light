@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useTime from '../../store/store';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useTimer } from 'react-use-precision-timer';
 
 const DelayTime = 1000;
@@ -8,6 +8,9 @@ const DelayTime = 1000;
 export default function Slider() {
 	const { setCurrentTime, currentTime, incrementTime } = useTime();
 	const firstRender = useRef(true);
+
+	const [isDragging, setIsDragging] = useState(false);
+	const [rangeVal, setRangeVal] = useState(currentTime);
 
 	const callback = useCallback(() => {
 		incrementTime();
@@ -22,6 +25,24 @@ export default function Slider() {
 			timer.start();
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!isDragging) {
+			setRangeVal(currentTime);
+		}
+	}, [currentTime]);
+
+	const handleRangeChange = (event) => {
+		if (!isDragging) {
+			setIsDragging(true);
+		}
+		setRangeVal(parseInt(event.target.value));
+	};
+
+	const handleRangeRelease = () => {
+		setIsDragging(false);
+		setCurrentTime(rangeVal);
+	};
 
 	return (
 		<Container>
@@ -44,6 +65,16 @@ export default function Slider() {
 				<rect x='277' width='6' height='29' fill='white' />
 				<rect x='554' y='3' width='6' height='26' fill='white' />
 			</SVG>
+
+			<Input
+				type='range'
+				min='0'
+				max='100'
+				value={isDragging ? rangeVal : currentTime}
+				onChange={handleRangeChange}
+				onMouseUp={handleRangeRelease}
+				onMouseDown={() => setIsDragging(true)}
+			/>
 		</Container>
 	);
 }
@@ -51,7 +82,8 @@ export default function Slider() {
 const Container = styled.div`
 	display: flex;
 	position: relative;
-	width: 500px;
+	min-width: 500px;
+	align-items: center;
 `;
 
 const Background = styled.div<any>`
@@ -76,9 +108,10 @@ const BackgroundProgress = styled.div<any>`
 	height: 100%;
 	background: linear-gradient(86deg, #bbbbbb 0%, #ffffff 100%);
 	top: 0;
-	left: ${(props) => (props.progress % 100) - 100}%;
+	left: ${(props) =>
+		props.progress === 100 ? 0 : (props.progress % 100) - 100}%;
 
-	transition: left ${DelayTime / 1000}s ease-in;
+	/* transition: left ${DelayTime / 1000}s ease-in; */
 `;
 
 const ClipPath = styled.div`
@@ -90,6 +123,33 @@ const ClipPath = styled.div`
 
 const SVG = styled.svg`
 	position: relative;
-	width: 100%;
 	visibility: hidden;
+`;
+
+const Input = styled.input`
+	position: absolute;
+	width: 100%;
+	-webkit-appearance: none;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+
+	&::-webkit-slider-runnable-track {
+		background: transparent;
+	}
+
+	&::-webkit-slider-thumb {
+		-webkit-appearance: none; /* Override default look */
+		appearance: none;
+		/* Centers thumb on the track */
+		background-color: #ffffff;
+		height: 16px;
+		width: 16px;
+		//transform: translateY(-50%);
+		border-radius: 50%;
+
+		&:hover {
+			transform: scale(1.2);
+		}
+	}
 `;
