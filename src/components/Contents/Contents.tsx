@@ -104,7 +104,7 @@ const Hero = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	width: 100%;
-	height: 100vh;
+	height: 100dvh;
 `;
 
 const Top = styled.div`
