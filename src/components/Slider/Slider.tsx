@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import useTime from '../../store/store';
+import useStore from '../../store/store';
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useTimer } from 'react-use-precision-timer';
 
 const DelayTime = 1000;
 
 export default function Slider() {
-	const { setCurrentTime, currentTime, incrementTime, isPaused } = useTime();
+	const { setCurrentTime, currentTime, incrementTime, isPaused } = useStore();
 
 	const [isDragging, setIsDragging] = useState(false);
 	const [rangeVal, setRangeVal] = useState(currentTime);

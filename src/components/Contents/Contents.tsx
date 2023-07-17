@@ -3,19 +3,19 @@ import Slider from '../Slider/Slider';
 import BubbleIcon from '../BubbleIcon/BubbleIcon';
 import RefreshArrowSVG from '../SVG/RefreshArrowSVG';
 import FastForwardSVG from '../SVG/FastForwardSVG';
-import useTime from '../../store/store';
+import useStore from '../../store/store';
 import PlaySVG from '../SVG/PlaySVG';
 import PauseSVG from '../SVG/PauseSVG';
 import SlowBackSVG from '../SVG/SlowBackSVG';
 import { formatTime } from '../../utils/time';
 
 export default function Contents() {
-	const resetTime = useTime((state) => state.resetTime);
-	const pauseTime = useTime((state) => state.setIsPaused);
-	const isPaused = useTime((state) => state.isPaused);
-	const setFactor = useTime((state) => state.setFactor);
-	const factor = useTime((state) => state.factor);
-	const currentTime = useTime((state) => state.currentTime);
+	const resetTime = useStore((state) => state.resetTime);
+	const pauseTime = useStore((state) => state.setIsPaused);
+	const isPaused = useStore((state) => state.isPaused);
+	const setFactor = useStore((state) => state.setFactor);
+	const factor = useStore((state) => state.factor);
+	const currentTime = useStore((state) => state.currentTime);
 
 	const startTime = 11;
 	const convertTime = currentTime * 14.4 + startTime * 60;

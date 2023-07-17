@@ -17,8 +17,6 @@ import Effects from './Effects';
 import Lights from './Lights';
 
 export default function Scene() {
-	const rectLightRef = useRef<any>();
-
 	// const controlsPerformace = useControls('performance', {
 	// 	perfVisible: true,
 	// });

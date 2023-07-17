@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react';
-import useTime from '../../store/store';
+import useStore from '../../store/store';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { easing } from 'maath';
 import { PerformanceMonitor, SoftShadows } from '@react-three/drei';
+import { motion as motion3d } from 'framer-motion-3d';
 
 export default function Lights() {
-	const currentTime = useTime((state) => state.currentTime);
+	const currentTime = useStore((state) => state.currentTime);
 
 	const lookAtRef = useRef<any>();
 
@@ -31,10 +32,16 @@ export default function Lights() {
 
 	return (
 		<>
-			<ambientLight color={'#72643d'} intensity={0.6} />
-			<directionalLight
+			<motion3d.ambientLight
+				animate={{ color: ['#72643d', '#676767'] }}
+				transition={{ duration: 10 }}
+				intensity={0.6}
+			/>
+			<motion3d.directionalLight
 				intensity={2.5}
-				color={'#f7b03e'}
+				//color={'#f7b03e'}
+				animate={{ color: ['#f7b03e', '#ffffff'] }}
+				transition={{ duration: 10 }}
 				ref={lightRef}
 				position={[14.1, 6.6, -3.4]}
 				castShadow
@@ -45,16 +52,17 @@ export default function Lights() {
 					attach='shadow-camera'
 					args={[-8.5, 8.5, 8.5, -8.5, 0.1, 100]}
 				/>
-			</directionalLight>
+			</motion3d.directionalLight>
 
 			<PerformanceMonitor onDecline={() => setIsLow(true)} />
 
 			{!isLow ? (
 				<>
-					<directionalLight
+					<motion3d.directionalLight
 						ref={lightRef2}
 						intensity={0.5}
-						color={'#f7b03e'}
+						animate={{ color: ['#f7b03e', '#ffffff'] }}
+						transition={{ duration: 10 }}
 						position={[14.1, 4.6, -3.4]}
 						castShadow
 						shadow-mapSize={2048}
@@ -65,9 +73,10 @@ export default function Lights() {
 						target={lookAtRef.current}
 					/>
 
-					<rectAreaLight
+					<motion3d.rectAreaLight
 						position={[17, 2, 1]}
-						color={'#ffc267'}
+						animate={{ color: ['#ffc267', '#bebdc0'] }}
+						transition={{ duration: 10 }}
 						intensity={1}
 						lookAt={lookAtRef.current}
 						width={10}
