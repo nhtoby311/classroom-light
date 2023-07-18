@@ -9,6 +9,8 @@ import PauseSVG from '../SVG/PauseSVG';
 import SlowBackSVG from '../SVG/SlowBackSVG';
 import { formatTime } from '../../utils/time';
 import { useEffect, useMemo } from 'react';
+import DayNightCycleSVG from '../SVG/DayNightCycleSVG';
+import InwardSVG from '../SVG/InwardSVG';
 
 export default function Contents() {
 	const resetTime = useStore((state) => state.resetTime);
@@ -18,6 +20,7 @@ export default function Contents() {
 	const factor = useStore((state) => state.factor);
 	const currentTime = useStore((state) => state.currentTime);
 
+	const currentTheme = useStore((state) => state.currentTheme);
 	const setCurrentTheme = useStore((state) => state.setTheme);
 	const isDayNightCycle = useStore((state) => state.isDayNightCycle);
 	const setIsDayNightCycle = useStore((state) => state.setIsDayNightCycle);
@@ -52,12 +55,62 @@ export default function Contents() {
 		<Wrapper>
 			<Container>
 				<Hero>
-					<Top />
+					<Top>
+						<div></div>
+
+						<ColorPickerCont>
+							<ColorPicker
+								color='#F9F9F9'
+								className={
+									currentTheme === 'light' ? 'active' : ''
+								}
+								onClick={() => setCurrentTheme('light')}
+							/>
+
+							<ColorPicker
+								color='#faee82'
+								className={
+									currentTheme === 'yellow' ? 'active' : ''
+								}
+								onClick={() => setCurrentTheme('yellow')}
+							/>
+
+							<ColorPicker
+								color='#18192f'
+								className={
+									currentTheme === 'dark' ? 'active' : ''
+								}
+								onClick={() => setCurrentTheme('dark')}
+							/>
+
+							<ColorPicker
+								color='linear-gradient(90deg, rgba(30,31,31,1) 49%, rgba(255,255,255,1) 51%)'
+								className={
+									currentTheme === 'b&w' ? 'active' : ''
+								}
+								onClick={() => setCurrentTheme('b&w')}
+							/>
+						</ColorPickerCont>
+					</Top>
 
 					<Bottom>
 						<div></div>
 						<SliderCont>
-							<h3>TIME</h3>
+							<UpperSliderCont>
+								<BubbleIcon
+									active={isDayNightCycle}
+									onClickCB={() => {
+										setIsDayNightCycle(!isDayNightCycle);
+									}}>
+									<DayNightCycleSVG />
+								</BubbleIcon>
+								<h3>TIME</h3>
+
+								<BubbleIcon>
+									<InwardSVG />
+								</BubbleIcon>
+							</UpperSliderCont>
+
 							<Slider />
 							<SliderInfo>
 								<OtherControlsCont>
@@ -91,27 +144,7 @@ export default function Contents() {
 							</SliderInfo>
 						</SliderCont>
 
-						<div style={{ pointerEvents: 'all' }}>
-							<button onClick={() => setCurrentTheme('yellow')}>
-								Yellow
-							</button>
-							<button onClick={() => setCurrentTheme('b&w')}>
-								B&W
-							</button>
-							<button onClick={() => setCurrentTheme('dark')}>
-								Dark
-							</button>
-							<button onClick={() => setCurrentTheme('light')}>
-								Light
-							</button>
-
-							<button
-								onClick={() =>
-									setIsDayNightCycle(!isDayNightCycle)
-								}>
-								{isDayNightCycle + ''}
-							</button>
-						</div>
+						<div></div>
 					</Bottom>
 				</Hero>
 			</Container>
@@ -156,6 +189,11 @@ const Hero = styled.div`
 
 const Top = styled.div`
 	display: flex;
+	position: relative;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30px 0;
 `;
 
 const Bottom = styled.div`
@@ -178,11 +216,20 @@ const SliderCont = styled.div`
 	h3 {
 		font-size: 28px;
 		font-weight: 500;
+		color: rgba(255, 255, 255, 0.8);
 
 		@media (max-width: 700px) {
 			font-size: 20px;
 		}
 	}
+`;
+
+const UpperSliderCont = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 50px;
+	pointer-events: auto;
 `;
 
 const SliderInfo = styled.div`
@@ -225,4 +272,49 @@ const ControlsCont = styled.div`
 	p {
 		user-select: none;
 	}
+`;
+
+const ColorPickerCont = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	height: 38px;
+	flex-wrap: wrap;
+
+	@media (max-width: 700px) {
+		padding: 0 20px;
+	}
+`;
+
+const ColorPicker = styled.div<any>`
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: ${(props) => props.color};
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: auto;
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;
+	&.active {
+		width: 28px;
+		height: 28px;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 38px;
+			height: 38px;
+			border-radius: 50%;
+			border: 2px solid #f9f9f9;
+		}
+	}
+`;
+
+const Logo = styled.h1`
+	font-size: 54px;
+	font-weight: 700;
+	color: #333;
 `;
