@@ -103,6 +103,25 @@ export default function Lights() {
 		},
 	};
 
+	const variantsMeshLight: VARIANT = {
+		yellow: {
+			color: '#ffcead',
+			transition: { duration: DURATION },
+		},
+		'b&w': {
+			color: '#e1e1e1',
+			transition: { duration: DURATION },
+		},
+		dark: {
+			color: '#191a28',
+			transition: { duration: DURATION },
+		},
+		light: {
+			color: '#cff2fd',
+			transition: { duration: DURATION },
+		},
+	};
+
 	// useHelper(rectLightRef, RectAreaLightHelper, 'cyan');
 
 	return (
@@ -127,6 +146,14 @@ export default function Lights() {
 					args={[-8.5, 8.5, 8.5, -8.5, 0.1, 100]}
 				/>
 			</motion3d.directionalLight>
+
+			<mesh position={[7, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
+				<planeGeometry args={[40, 20, 1]} />
+				<motion3d.meshBasicMaterial
+					animate={currentTheme}
+					variants={variantsMeshLight}
+				/>
+			</mesh>
 
 			<PerformanceMonitor onDecline={() => setIsLow(true)} />
 

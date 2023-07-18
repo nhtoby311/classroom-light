@@ -30,11 +30,6 @@ export default function Scene() {
 
 			<Model scale={0.2} />
 
-			{/* <mesh position={[0, 1, 0]}>
-				<boxGeometry args={[1, 1, 1]} />
-				<meshStandardMaterial color='red' />
-			</mesh> */}
-
 			<PerspectiveCamera
 				fov={80}
 				makeDefault
