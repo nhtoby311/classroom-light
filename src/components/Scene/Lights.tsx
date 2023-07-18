@@ -24,7 +24,9 @@ export default function Lights() {
 	const ZLightPosition = Math.sin(currentTime * 0.02 * Math.PI) * 25;
 	const XLightPosition = Math.cos(currentTime * 0.02 * Math.PI) * 25;
 
-	const [isLow, setIsLow] = useState(false);
+	const [isLow, setIsLow] = useState(
+		localStorage.getItem('isLow') === 'true' || false
+	);
 
 	const vec2 = new THREE.Vector3();
 	useFrame((_, delta) => {
@@ -155,7 +157,12 @@ export default function Lights() {
 				/>
 			</mesh>
 
-			<PerformanceMonitor onDecline={() => setIsLow(true)} />
+			<PerformanceMonitor
+				onDecline={() => {
+					localStorage.setItem('isLow', 'true');
+					setIsLow(true);
+				}}
+			/>
 
 			{!isLow ? (
 				<>
