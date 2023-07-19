@@ -62,7 +62,7 @@ export default function Lights() {
 			transition: { duration: DURATION },
 		},
 		light: {
-			color: '#9bfffa',
+			color: '#fbed6d',
 			transition: { duration: DURATION },
 		},
 	};
@@ -81,7 +81,7 @@ export default function Lights() {
 			transition: { duration: DURATION },
 		},
 		light: {
-			color: '#6a7c87',
+			color: '#5e5e4e',
 			transition: { duration: DURATION },
 		},
 	};
@@ -100,7 +100,7 @@ export default function Lights() {
 			transition: { duration: DURATION },
 		},
 		light: {
-			color: '#7cdffe',
+			color: '#f8d98b',
 			transition: { duration: DURATION },
 		},
 	};
@@ -119,7 +119,7 @@ export default function Lights() {
 			transition: { duration: DURATION },
 		},
 		light: {
-			color: '#cff2fd',
+			color: '#ffffff',
 			transition: { duration: DURATION },
 		},
 	};
