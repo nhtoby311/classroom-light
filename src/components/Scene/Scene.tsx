@@ -15,15 +15,14 @@ import LerpRig from '../LerpRig/LerpRig';
 
 import Effects from './Effects';
 import Lights from './Lights';
+import { Perf } from 'r3f-perf';
 
 export default function Scene() {
-	// const controlsPerformace = useControls('performance', {
-	// 	perfVisible: true,
-	// });
-
 	return (
 		<>
 			{/* {controlsPerformace.perfVisible && <Perf position={'top-left'} />} */}
+
+			{/* <Perf position={'top-left'} /> */}
 			<color attach='background' args={['#ffffff']} />
 
 			<Lights />

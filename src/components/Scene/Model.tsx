@@ -8,6 +8,13 @@ export function Model(props: any) {
 	const { nodes, materials }: any = useGLTF('/classroom.glb');
 	return (
 		<group {...props} dispose={null}>
+			<mesh
+				castShadow
+				receiveShadow
+				geometry={nodes['low-poly'].geometry}
+				material={nodes['low-poly'].material}>
+				<meshStandardMaterial />
+			</mesh>
 			<mesh castShadow receiveShadow geometry={nodes.room.geometry}>
 				<meshStandardMaterial />
 			</mesh>
