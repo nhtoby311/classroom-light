@@ -8,9 +8,10 @@ import PlaySVG from '../SVG/PlaySVG';
 import PauseSVG from '../SVG/PauseSVG';
 import SlowBackSVG from '../SVG/SlowBackSVG';
 import { formatTime } from '../../utils/time';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import DayNightCycleSVG from '../SVG/DayNightCycleSVG';
 import InwardSVG from '../SVG/InwardSVG';
+import OpacitySVG from '../SVG/OpacitySVG';
 
 export default function Contents() {
 	const resetTime = useStore((state) => state.resetTime);
@@ -50,6 +51,8 @@ export default function Contents() {
 		}
 		//console.log(mimicTime);
 	}, [mimicTime, isDayNightCycle]);
+
+	const [minimize, setMinimize] = useState(false);
 
 	return (
 		<Wrapper>
@@ -93,7 +96,7 @@ export default function Contents() {
 						</ColorPickerCont>
 					</Top>
 
-					<Bottom>
+					<Bottom className={minimize ? 'minimize' : ''}>
 						<div></div>
 						<SliderCont>
 							<UpperSliderCont>
@@ -106,8 +109,9 @@ export default function Contents() {
 								</BubbleIcon>
 								<h3>TIME</h3>
 
-								<BubbleIcon>
-									<InwardSVG />
+								<BubbleIcon
+									onClickCB={() => setMinimize(!minimize)}>
+									<OpacitySVG />
 								</BubbleIcon>
 							</UpperSliderCont>
 
@@ -202,6 +206,11 @@ const Bottom = styled.div`
 	align-items: flex-end;
 	padding: 30px 50px;
 	width: 100%;
+
+	&.minimize {
+		opacity: 0.1;
+	}
+
 	@media (max-width: 700px) {
 		padding: 20px 10px;
 	}
