@@ -20,6 +20,7 @@ import { Perf } from 'r3f-perf';
 export default function Scene() {
 	return (
 		<>
+			<Effects />
 			{/* {controlsPerformace.perfVisible && <Perf position={'top-left'} />} */}
 
 			{/* <Perf position={'top-left'} /> */}
@@ -38,15 +39,15 @@ export default function Scene() {
 				far={10000}
 			/>
 
-			<LerpRig
+			{/* <LerpRig
 				startX={2.4}
 				startY={1.6}
 				lookAt={[0, 1, 0]}
 				propotion={1}
 				propotionY={0.3}
-			/>
+			/> */}
 
-			{/* <OrbitControls /> */}
+			<OrbitControls />
 		</>
 	);
 }

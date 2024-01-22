@@ -1,9 +1,9 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useStore from '../../store/store';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { easing } from 'maath';
-import { PerformanceMonitor, SoftShadows } from '@react-three/drei';
+import { PerformanceMonitor, SoftShadows, useHelper } from '@react-three/drei';
 import { motion as motion3d } from 'framer-motion-3d';
 import { THEME } from '../../store/slices/themeSlice';
 
@@ -29,12 +29,22 @@ export default function Lights() {
 	);
 
 	const vec2 = new THREE.Vector3();
+
+	const setLightRef = useStore((state) => state.setLightRef);
+	const dlightRef = useStore((state) => state.lightRef);
+
+	useHelper(
+		dlightRef ? { current: dlightRef } : null,
+		THREE.DirectionalLightHelper,
+		undefined,
+		'red'
+	);
 	useFrame((_, delta) => {
 		//lightRef.current.position.lerp(vec2, 0.005);
 
-		vec2.set(XLightPosition, lightRef.current.position.y, ZLightPosition);
-		easing.damp3(lightRef.current.position, vec2, 1.5, delta);
-		if (!isLow) easing.damp3(lightRef2.current.position, vec2, 1.5, delta);
+		vec2.set(XLightPosition, dlightRef.position.y, ZLightPosition);
+		easing.damp3(dlightRef.position, vec2, 1.5, delta);
+		//if (!isLow) easing.damp3(lightRef2.current.position, vec2, 1.5, delta);
 	});
 
 	//ANIMATION VARIANTS
@@ -126,9 +136,13 @@ export default function Lights() {
 
 	// useHelper(rectLightRef, RectAreaLightHelper, 'cyan');
 
+	// useEffect(() => {
+	// 	if (lightRef.current) setLightRef(lightRef.current);
+	// }, []);
+
 	return (
 		<>
-			<motion3d.ambientLight
+			{/* <motion3d.ambientLight
 				animate={currentTheme}
 				variants={variantsAmbiLight}
 				intensity={0.6}
@@ -147,7 +161,21 @@ export default function Lights() {
 					attach='shadow-camera'
 					args={[-8.5, 8.5, 8.5, -8.5, 0.1, 100]}
 				/>
-			</motion3d.directionalLight>
+			</motion3d.directionalLight> */}
+
+			<motion3d.directionalLight
+				ref={setLightRef}
+				intensity={0.5}
+				position={[14.1, 6.6, -3.4]}
+				castShadow
+				shadow-mapSize={2048}
+				shadow-camera-top={8}
+				shadow-camera-right={8}
+				shadow-camera-bottom={-8}
+				shadow-camera-left={-8}
+				shadow-camera-near={0.1}
+				shadow-camera-far={1000}
+			/>
 
 			<mesh position={[7, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
 				<planeGeometry args={[40, 20, 1]} />
@@ -164,7 +192,7 @@ export default function Lights() {
 				}}
 			/>
 
-			{!isLow ? (
+			{/* {!isLow ? (
 				<>
 					<motion3d.directionalLight
 						ref={lightRef2}
@@ -192,7 +220,7 @@ export default function Lights() {
 						rotation={[0, Math.PI / 2, 0]}
 					/>
 				</>
-			) : null}
+			) : null} */}
 
 			<object3D ref={lookAtRef} position={[0, 2.5, 0]} />
 

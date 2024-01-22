@@ -19,12 +19,16 @@ export function Model(props: any) {
 				<meshStandardMaterial />
 			</mesh>
 			<mesh
+				castShadow
+				receiveShadow
 				geometry={
 					nodes['Window002|Glass_L_Windowblend|Dupli|2_glass_0']
 						.geometry
 				}
 				material={materials['glass.001']}></mesh>
 			<mesh
+				castShadow
+				receiveShadow
 				geometry={
 					nodes['Window003|Glass_L_Windowblend|Dupli|2_glass_0']
 						.geometry

@@ -9,6 +9,9 @@ export type ThemeState = {
 	isDayNightCycle: boolean;
 	setTheme: (theme: THEME) => void;
 	setIsDayNightCycle: (isDayNightCycle: boolean) => void;
+
+	lightRef: any;
+	setLightRef: (ref: any) => void;
 };
 
 export const createThemeSlice: StateCreator<StoreState, [], [], ThemeState> = (
@@ -21,5 +24,10 @@ export const createThemeSlice: StateCreator<StoreState, [], [], ThemeState> = (
 	},
 	setIsDayNightCycle: (isDayNightCycle: boolean) => {
 		set({ isDayNightCycle });
+	},
+
+	lightRef: null,
+	setLightRef: (ref: any) => {
+		set({ lightRef: ref });
 	},
 });
